@@ -1,0 +1,351 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "Open API for Event Sidecar",
+    "description": "Open API for Event Sidecar",
+    "license": {
+      "name": "Apache 2.0"
+    }
+  },
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "description": "The HTTP request GET /health is used to return the current status of the Event Sidecar API.",
+        "summary": "Get Health",
+        "tags": [
+          "api"
+        ],
+        "operationId": "GetHealth",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/ResponseHealth200"
+          },
+          "400": {
+            "$ref": "#/responses/ErrorResponse400"
+          },
+          "401": {
+            "$ref": "#/responses/ErrorResponse401"
+          },
+          "403": {
+            "$ref": "#/responses/ErrorResponse403"
+          },
+          "404": {
+            "$ref": "#/responses/ErrorResponse404"
+          },
+          "405": {
+            "$ref": "#/responses/ErrorResponse405"
+          },
+          "406": {
+            "$ref": "#/responses/ErrorResponse406"
+          },
+          "501": {
+            "$ref": "#/responses/ErrorResponse501"
+          },
+          "503": {
+            "$ref": "#/responses/ErrorResponse503"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ErrorCode": {
+      "title": "ErrorCode",
+      "type": "string",
+      "pattern": "^[1-9]\\d{3}$",
+      "description": "The API data type ErrorCode is a JSON String of four characters, consisting of digits only. Negative numbers are not allowed. A leading zero is not allowed. Each error code in the API is a four-digit number, for example, 1234, where the first number (1 in the example) represents the high-level error category, the second number (2 in the example) represents the low-level error category, and the last two numbers (34 in the example) represents the specific error."
+    },
+    "ErrorDescription": {
+      "title": "ErrorDescription",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "description": "Error description string."
+    },
+    "ExtensionKey": {
+      "title": "ExtensionKey",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 32,
+      "description": "Extension key."
+    },
+    "ExtensionValue": {
+      "title": "ExtensionValue",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "description": "Extension value."
+    },
+    "ErrorInformation": {
+      "title": "ErrorInformation",
+      "type": "object",
+      "description": "Data model for the complex type ErrorInformation.",
+      "properties": {
+        "errorCode": {
+          "type": "string",
+          "description": "Specific error number."
+        },
+        "errorDescription": {
+          "type": "string",
+          "description": "Error description string."
+        },
+        "extensionList": {
+          "$ref": "#/definitions/ExtensionList"
+        }
+      },
+      "required": [
+        "errorCode",
+        "errorDescription"
+      ]
+    },
+    "ErrorInformationResponse": {
+      "title": "ErrorInformationResponse",
+      "type": "object",
+      "description": "Data model for the complex type object that contains an optional element ErrorInformation used along with 4xx and 5xx responses.",
+      "properties": {
+        "errorInformation": {
+          "$ref": "#/definitions/ErrorInformation"
+        }
+      }
+    },
+    "Extension": {
+      "title": "Extension",
+      "type": "object",
+      "description": "Data model for the complex type Extension",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "Extension key."
+        },
+        "value": {
+          "type": "string",
+          "description": "Extension value."
+        }
+      },
+      "required": [
+        "key",
+        "value"
+      ]
+    },
+    "ExtensionList": {
+      "title": "ExtensionList",
+      "type": "object",
+      "description": "Data model for the complex type ExtensionList",
+      "properties": {
+        "extension": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          },
+          "minItems": 1,
+          "maxItems": 16,
+          "description": "Number of Extension elements"
+        }
+      },
+      "required": [
+        "extension"
+      ]
+    },
+    "Status": {
+      "title": "Status",
+      "type": "object",
+      "description": "Data model for the api status.",
+      "properties": {
+        "status": {
+          "type": "string",
+          "description": "The return status, usually \"OK\""
+        }
+      }
+    }
+  },
+  "responses": {
+    "ResponseHealth200": {
+      "description": "OK",
+      "schema": {
+        "$ref": "#/definitions/Status"
+      }
+    },
+    "Response201": {
+      "description": "Created"
+    },
+    "Response204": {
+      "description": "No Content"
+    },
+    "ErrorResponse400": {
+      "description": "Bad Request - The application cannot process the request; for example, due to malformed syntax or the payload exceeded size restrictions.",
+      "schema": {
+        "$ref": "#/definitions/ErrorInformationResponse"
+      },
+      "headers": {
+        "Content-Length": {
+          "description": "The Content-Length header field indicates the anticipated size of the payload body. Only sent if there is a body.",
+          "type": "integer"
+        },
+        "Content-Type": {
+          "description": "The Content-Type header indicates the specific version of the API used to send the payload body.",
+          "type": "string"
+        }
+      }
+    },
+    "ErrorResponse401": {
+      "description": "Unauthorized - The request requires authentication in order to be processed.",
+      "schema": {
+        "$ref": "#/definitions/ErrorInformationResponse"
+      },
+      "headers": {
+        "Content-Length": {
+          "description": "The Content-Length header field indicates the anticipated size of the payload body. Only sent if there is a body.",
+          "type": "integer"
+        },
+        "Content-Type": {
+          "description": "The Content-Type header indicates the specific version of the API used to send the payload body.",
+          "type": "string"
+        }
+      }
+    },
+    "ErrorResponse403": {
+      "description": "Forbidden - The request was denied and will be denied in the future.",
+      "schema": {
+        "$ref": "#/definitions/ErrorInformationResponse"
+      },
+      "headers": {
+        "Content-Length": {
+          "description": "The Content-Length header field indicates the anticipated size of the payload body. Only sent if there is a body.",
+          "type": "integer"
+        },
+        "Content-Type": {
+          "description": "The Content-Type header indicates the specific version of the API used to send the payload body.",
+          "type": "string"
+        }
+      }
+    },
+    "ErrorResponse404": {
+      "description": "Not Found - The resource specified in the URI was not found.",
+      "schema": {
+        "$ref": "#/definitions/ErrorInformationResponse"
+      },
+      "headers": {
+        "Content-Length": {
+          "description": "The Content-Length header field indicates the anticipated size of the payload body. Only sent if there is a body.",
+          "type": "integer"
+        },
+        "Content-Type": {
+          "description": "The Content-Type header indicates the specific version of the API used to send the payload body.",
+          "type": "string"
+        }
+      }
+    },
+    "ErrorResponse405": {
+      "description": "Method Not Allowed - An unsupported HTTP method for the request was used.",
+      "schema": {
+        "$ref": "#/definitions/ErrorInformationResponse"
+      },
+      "headers": {
+        "Content-Length": {
+          "description": "The Content-Length header field indicates the anticipated size of the payload body. Only sent if there is a body.",
+          "type": "integer"
+        },
+        "Content-Type": {
+          "description": "The Content-Type header indicates the specific version of the API used to send the payload body.",
+          "type": "string"
+        }
+      }
+    },
+    "ErrorResponse406": {
+      "description": "Not acceptable - The server is not capable of generating content according to the Accept headers sent in the request. Used in the API to indicate that the server does not support the version that the client is requesting.",
+      "schema": {
+        "$ref": "#/definitions/ErrorInformationResponse"
+      },
+      "headers": {
+        "Content-Length": {
+          "description": "The Content-Length header field indicates the anticipated size of the payload body. Only sent if there is a body.",
+          "type": "integer"
+        },
+        "Content-Type": {
+          "description": "The Content-Type header indicates the specific version of the API used to send the payload body.",
+          "type": "string"
+        }
+      }
+    },
+    "ErrorResponse501": {
+      "description": "Not Implemented - The server does not support the requested service. The client should not retry.",
+      "schema": {
+        "$ref": "#/definitions/ErrorInformationResponse"
+      },
+      "headers": {
+        "Content-Length": {
+          "description": "The Content-Length header field indicates the anticipated size of the payload body. Only sent if there is a body.",
+          "type": "integer"
+        },
+        "Content-Type": {
+          "description": "The Content-Type header indicates the specific version of the API used to send the payload body.",
+          "type": "string"
+        }
+      }
+    },
+    "ErrorResponse503": {
+      "description": "Service Unavailable - The server is currently unavailable to accept any new service requests. This should be a temporary state, and the client should retry within a reasonable time frame.",
+      "schema": {
+        "$ref": "#/definitions/ErrorInformationResponse"
+      },
+      "headers": {
+        "Content-Length": {
+          "description": "The Content-Length header field indicates the anticipated size of the payload body. Only sent if there is a body.",
+          "type": "integer"
+        },
+        "Content-Type": {
+          "description": "The Content-Type header indicates the specific version of the API used to send the payload body.",
+          "type": "string"
+        }
+      }
+    }
+  },
+  "parameters": {
+    "Accept": {
+      "name": "accept",
+      "in": "header",
+      "required": true,
+      "type": "string",
+      "description": "The Accept header field indicates the version of the API the client would like the server to use."
+    },
+    "Accept-Optional": {
+      "name": "accept",
+      "in": "header",
+      "required": false,
+      "type": "string",
+      "description": "The Accept header field indicates the version of the API the client would like the server to use."
+    },
+    "Content-Length": {
+      "name": "content-length",
+      "in": "header",
+      "required": false,
+      "type": "integer",
+      "description": "The Content-Length header field indicates the anticipated size of the payload body. Only sent if there is a body. Note - The API supports a maximum size of 5242880 bytes (5 Megabytes)"
+    },
+    "Content-Type": {
+      "name": "content-type",
+      "in": "header",
+      "type": "string",
+      "required": true,
+      "description": "The Content-Type header indicates the specific version of the API used to send the payload body."
+    },
+    "Date": {
+      "name": "date",
+      "in": "header",
+      "type": "string",
+      "required": true,
+      "description": "The Date header field indicates the date when the request was sent."
+    }
+  }
+}
