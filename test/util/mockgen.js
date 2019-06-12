@@ -1,5 +1,4 @@
 /*****
- * @file This registers all handlers for the central-ledger API
  License
  --------------
  Copyright © 2017 Bill & Melinda Gates Foundation
@@ -29,29 +28,15 @@
  ******/
 
 'use strict'
+const SwagMock = require('swagmock')
+const Path = require('path')
+const apiPath = Path.resolve(__dirname, '../../src/interface/swagger.json')
+let mockGen
 
-const eventType = {
-  EVENT: 'event'
-}
-const eventAction = {
-  AUDIT: 'audit',
-  LOG: 'log',
-  TRACE: 'trace'
-}
-
-const apiServices = {
-  SWITCH: 'switch'
-}
-
-const topicMap = {
-  'event': {
-    functionality: eventType.EVENT
-  }
-}
-
-module.exports = {
-  eventType,
-  eventAction,
-  topicMap,
-  apiServices
+module.exports = function () {
+  /**
+   * Cached mock generator
+   */
+  mockGen = mockGen || SwagMock(apiPath)
+  return mockGen
 }

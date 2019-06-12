@@ -64,7 +64,7 @@
         "swagmock": "1.0.0"
     },
     "scripts": {
-        "start": "node src/index.js server",
+        "start": "node src/index.js api",
         "test": "npx ava test/unit/ match=.test.js",
         "cover": "npx nyc --all report --reporter=lcov npm run test",
         "lint": "eslint .",

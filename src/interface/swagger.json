@@ -164,7 +164,19 @@
             "properties": {
                 "status": {
                     "type": "string",
-                    "description": "The return status, usually \"OK\""
+                    "description": "The return current status"
+                },
+                "uptime": {
+                    "type": "number",
+                    "description": "Duration that the server is running"
+                },
+                "startTime": {
+                    "type": "string",
+                    "description": "Time the server started"
+                },
+                "versionNumber": {
+                    "type": "string",
+                    "description": "Current version of the API"
                 }
             }
         }
