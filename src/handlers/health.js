@@ -36,7 +36,8 @@ module.exports = {
    * produces: application/json
    * responses: 200, 400, 401, 403, 404, 405, 406, 501, 503
    */
-  get: function (request, h) {
-    return handler.getHealth()
+  get: async (request, h) => {
+    let {response, statusCode} = await handler.getHealth()
+    return h.response(response).code(statusCode)
   }
 }

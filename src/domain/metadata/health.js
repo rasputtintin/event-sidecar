@@ -105,7 +105,7 @@ const getHealth = async function (request, h) {
     versionNumber,
     // ...subServices
   }
-  return h.response(response).code(statusCode)
+  return {response, statusCode}
 }
 
 // /**
