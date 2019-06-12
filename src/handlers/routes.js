@@ -16,27 +16,32 @@
  their names indented and be marked with a '-'. Email address can be added
  optionally within square brackets <email>.
  * Gates Foundation
+ - Name Surname <name.surname@gatesfoundation.com>
 
- - Rajiv Mothilal <rajiv.mothilal@modusbox.com>
-
+ - Pedro Barreto <pedrob@crosslaketech.com>
+ - Rajiv Mothilal <rajivmothilal@gmail.com>
+ - Shashikant Hirugade <shashikant.hirugade@modusbox.com>
  --------------
  ******/
+
 'use strict'
 
-const handler = require('../domain/metadata/health')
+const Handler = require('../domain/event/handler')
+const tags = ['api']
 
-/**
- * Operations on /health
- */
-module.exports = {
-  /**
-   * summary: Get Health
-   * description: The HTTP request GET /health is used to return the current status of the Event Sidecar API.
-   * parameters:
-   * produces: application/json
-   * responses: 200, 400, 401, 403, 404, 405, 406, 501, 503
-   */
-  get: function (request, h) {
-    return handler.getHealth()
+module.exports = [
+  {
+    method: 'POST',
+    path: '/event',
+    handler: Handler.handleRestRequest,
+    options: {
+      id: 'handleRequest',
+      tags: tags,
+      description: 'add a request to kafka event topic',
+      payload: {
+        allow: ['application/json'],
+        failAction: 'error'
+      }
+    }
   }
-}
+]

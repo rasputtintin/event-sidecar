@@ -21,22 +21,38 @@
 
  --------------
  ******/
+
 'use strict'
 
-const handler = require('../domain/metadata/health')
+const kafkaUtil = require('../../lib/kafka/util')
+const Enums = require('../../lib/enum')
 
 /**
- * Operations on /health
+ * @function logEvent
+ *
+ * @description Logs the event to Kafka
+ *
+ * @param {object} message Port to register the Server against
+ *
+ * @returns {Promise<true>} Returns if the logging of the event is successful or not
  */
+const logEvent = async (message) => {
+  return await kafkaUtil.produceGeneralMessage(Enums.eventType.EVENT, message, message.metadata.event.type)
+}
+
+/**
+ * @function handleRestRequest
+ *
+ * @description A temporary endpoint to cater for testing purposes for CEP-Tracing API
+ *
+ * @returns {Promise<true>} Returns if the logging of the event is successful or not
+ */
+const handleRestRequest = async (request, h) => {
+  await logEvent(request.payload)
+  return h.response()
+}
+
 module.exports = {
-  /**
-   * summary: Get Health
-   * description: The HTTP request GET /health is used to return the current status of the Event Sidecar API.
-   * parameters:
-   * produces: application/json
-   * responses: 200, 400, 401, 403, 404, 405, 406, 501, 503
-   */
-  get: function (request, h) {
-    return handler.getHealth()
-  }
+  logEvent,
+  handleRestRequest
 }

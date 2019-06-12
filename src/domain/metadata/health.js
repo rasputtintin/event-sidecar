@@ -18,14 +18,14 @@
  * Gates Foundation
  - Name Surname <name.surname@gatesfoundation.com>
 
- * Rajiv Mothilal <rajiv.mothilal@modusbox.com>
+ - Rajiv Mothilal <rajiv.mothilal@modusbox.com>
  --------------
  ******/
 
-const packageJson = require('../../package.json')
+const packageJson = require('../../../package.json')
 // const Util = require('../lib//kafka/util')
 // const Kafka = require('../lib/kafka')
-const Enum = require('../lib/enum')
+const Enum = require('../../lib/enum')
 
 const eventType = Enum.eventType
 const eventAction = Enum.eventAction

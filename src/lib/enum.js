@@ -40,19 +40,8 @@ const eventAction = {
 }
 
 const topicMap = {
-  event: {
-    'audit': {
-      functionality: eventType.EVENT,
-      action: eventAction.AUDIT
-    },
-    'log': {
-      functionality: eventType.EVENT,
-      action: eventAction.LOG
-    },
-    'trace': {
-      functionality: eventType.EVENT,
-      action: eventAction.TRACE
-    }
+  'event': {
+    functionality: eventType.EVENT
   }
 }
 

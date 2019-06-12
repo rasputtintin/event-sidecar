@@ -17,7 +17,7 @@
  optionally within square brackets <email>.
  * Gates Foundation
 
- * Rajiv Mothilal <rajiv.mothilal@modusbox.com>
+ - Rajiv Mothilal <rajiv.mothilal@modusbox.com>
 
  --------------
  ******/
@@ -36,27 +36,17 @@ Program
   .version(PJson.version)
   .description('CLI to manage Servers')
 
-Program.command('server') // sub-command name, coffeeType = type, required
-  .alias('s') // alternative sub-command is `o`
+Program.command('api') // sub-command name, coffeeType = type, required
+  .alias('a') // alternative sub-command is `o`
   .description('Start the Event Sidecar. Use options to specify server type of none to run both') // command description
-  .option('--api', 'Start the api server')
 
   // function to execute when command is uses
   .action(async (args) => {
-    if (args.api) {
-      Logger.debug('CLI: Executing --api')
-      let options = {
-        port: Config.PORT,
-        isAPI: true
-      }
-      module.exports = Server.initialize(options.port, options.isAPI)
-    } else {
-      let optionsApi = {
-        port: Config.PORT,
-        isAPI: true
-      }
-      module.exports = Server.initialize(optionsApi.port, optionsApi.isAPI)
+    let options = {
+      port: Config.PORT,
+      serviceName: args
     }
+    module.exports = Server.initialize(options.port, options.serviceName)
   })
 
 if (Array.isArray(process.argv) && process.argv.length > 1) {

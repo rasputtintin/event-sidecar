@@ -17,7 +17,7 @@
  optionally within square brackets <email>.
  * Gates Foundation
 
- * Rajiv Mothilal <rajiv.mothilal@modusbox.com>
+ - Rajiv Mothilal <rajiv.mothilal@modusbox.com>
 
  --------------
  ******/
@@ -31,6 +31,7 @@ const Config = require('./lib/config.js')
 const Logger = require('@mojaloop/central-services-shared').Logger
 const Plugins = require('./plugins')
 const RequestLogger = require('./lib/requestLogger')
+const Routes = require('./routes')
 
 const openAPIOptions = {
   api: Path.resolve(__dirname, './interface/swagger.json'),
@@ -56,6 +57,7 @@ const createServer = async (port) => {
       options: openAPIOptions
     }
   ])
+  server.register([Routes])
   await server.ext([
     {
       type: 'onPreHandler',
@@ -96,15 +98,17 @@ const createServer = async (port) => {
  *
  * @description Create gRPC Server
  *
+ * @param {string} serviceName - the name of the gRPC service for the corresponding API
+ *
  * @returns {Promise<Server>} Returns the Server object
  */
-const createRPCServer = async () => {
+const createRPCServer = async (serviceName) => {
   // code to create gRPC server here
   return null
 }
 
-const initialize = async (port = Config.PORT) => {
-  await createRPCServer()
+const initialize = async (port = Config.PORT, serviceName) => {
+  await createRPCServer(serviceName)
   const server = await createServer(port)
   server.plugins.openapi.setHost(server.info.host + ':' + server.info.port)
   Logger.info(`Server running on ${server.info.host}:${server.info.port}`)
