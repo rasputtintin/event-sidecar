@@ -37,7 +37,7 @@ const Enums = require('../../lib/enum')
  * @returns {Promise<true>} Returns if the logging of the event is successful or not
  */
 const logEvent = async (message) => {
-  return await kafkaUtil.produceGeneralMessage(Enums.eventType.EVENT, message, message.metadata.event.type)
+  return await kafkaUtil.produceGeneralMessage(Enums.eventType.EVENT, message, message.metadata.event.id ,message.metadata.event.type)
 }
 
 /**

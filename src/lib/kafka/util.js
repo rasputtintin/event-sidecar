@@ -151,16 +151,17 @@ const createGeneralTopicConf = (functionality, key = null, partition = null, opa
  * @param {string} functionality - the functionality flow. Example: 'event' ie: note the case of text
  * @param {object} message - a list of messages to consume for the relevant topic
  * @param {string} key - key applicable to topic
+ * @param {string} partition - which partition the message should be produced to
  *
  * @returns {object} - Returns a boolean: true if successful, or throws and error if failed
  */
-const produceGeneralMessage = async (functionality, message, key) => {
+const produceGeneralMessage = async (functionality, message, key, partition) => {
   let functionalityMapped = functionality
   if (Enum.topicMap[functionality] && Enum.topicMap[functionality]) {
     functionalityMapped = Enum.topicMap[functionality].functionality
   }
   let result = await Kafka.Producer.produceMessage(message,
-    createGeneralTopicConf(functionalityMapped, key),
+    createGeneralTopicConf(functionalityMapped, key, partition),
     getKafkaConfig(ENUMS.PRODUCER, functionalityMapped.toUpperCase()))
   return result
 }
