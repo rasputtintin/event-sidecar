@@ -5,7 +5,7 @@ const Hapi = require('@hapi/hapi')
 const HapiOpenAPI = require('hapi-openapi')
 const Path = require('path')
 const Mockgen = require('../../util/mockgen.js')
-
+const Routes = require('../../../src/routes')
 /**
  * summary: Get Health
  * description: The HTTP request GET /health is used to get the status of the server
@@ -36,6 +36,7 @@ Test('test Health get operation', async function (t) {
     })
   })
 
+  server.register([Routes])
   const mock = await requests
 
   t.pass(mock)
