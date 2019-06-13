@@ -26,6 +26,7 @@
 
 const kafkaUtil = require('../../lib/kafka/util')
 const Enums = require('../../lib/enum')
+const Boom = require('@hapi/boom')
 
 /**
  * @function logEvent
@@ -47,9 +48,13 @@ const logEvent = async (message) => {
  *
  * @returns {boolean} Returns if the logging of the event is successful or not
  */
-const handleRestRequest = async (request) => {
-  await logEvent(request.payload)
-  return true
+const handleRestRequest = async (request, h) => {
+  try {
+    await logEvent(request.payload)
+    return h.response().code(200)
+  } catch (e) {
+    throw Boom.badRequest(e.message)
+  }
 }
 
 module.exports = {
