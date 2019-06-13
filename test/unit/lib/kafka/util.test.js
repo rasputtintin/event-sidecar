@@ -164,7 +164,7 @@ Test.serial('getKafkaConfig should throw and error if Kafka config not in defaul
 })
 
 Test.serial('produceGeneralMessage should produce a general message', async (test) => {
-  const result = await Utility.produceGeneralMessage(EVENT, messageProtocol, KEY, PARTITION)
+  const result = await Utility.produceGeneralMessage(EVENT, messageProtocol, KEY)
   test.is(result, true)
 })
 
@@ -181,7 +181,7 @@ Test.serial('produceGeneralMessage should produce a general message using topicM
       }
     }
   })
-  const result = await ModuleProxy.produceGeneralMessage(EVENT, messageProtocol, KEY, PARTITION)
+  const result = await ModuleProxy.produceGeneralMessage(EVENT, messageProtocol, KEY)
   test.is(result, true)
 })
 
