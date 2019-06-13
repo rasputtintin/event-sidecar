@@ -151,7 +151,7 @@ const createGeneralTopicConf = (functionality, key = null, partition = null, opa
  * @param {string} functionality - the functionality flow. Example: 'event' ie: note the case of text
  * @param {object} message - a list of messages to consume for the relevant topic
  * @param {string} key - key applicable to topic
- * @param {string} partition - which partition the message should be produced to
+ * @param {number} partition - which partition the message should be produced to
  *
  * @returns {object} - Returns a boolean: true if successful, or throws and error if failed
  */

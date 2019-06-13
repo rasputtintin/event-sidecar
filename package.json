@@ -55,12 +55,16 @@
         "glob": "7.1.4",
         "hapi-openapi": "1.2.2",
         "hapi-swagger": "10.0.2",
-        "mustache": "3.0.1"
+        "mustache": "3.0.1",
+        "uuid4": "^1.1.4"
     },
     "devDependencies": {
-        "eslint": "5.16.0",
         "ava": "2.1.0",
+        "eslint": "5.16.0",
         "nyc": "14.1.1",
+        "proxyquire": "^2.1.0",
+        "rewire": "^4.0.1",
+        "sinon": "7.3.2",
         "swagmock": "1.0.0"
     },
     "scripts": {
