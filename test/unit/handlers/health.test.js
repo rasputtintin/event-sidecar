@@ -6,6 +6,7 @@ const HapiOpenAPI = require('hapi-openapi')
 const Path = require('path')
 const Mockgen = require('../../util/mockgen.js')
 const Routes = require('../../../src/routes')
+
 /**
  * summary: Get Health
  * description: The HTTP request GET /health is used to get the status of the server
@@ -13,11 +14,8 @@ const Routes = require('../../../src/routes')
  * produces: application/json
  * responses: 200, 400, 401, 403, 404, 405, 406, 501, 503
  */
-Test('test Health get operation', async function (t) {
-  // console.log('test Health get operation_1')
-
+Test.serial('test Health get operation', async function (t) {
   const server = new Hapi.Server()
-
   await server.register({
     plugin: HapiOpenAPI,
     options: {
@@ -26,7 +24,6 @@ Test('test Health get operation', async function (t) {
       outputvalidation: true
     }
   })
-
   const requests = new Promise((resolve, reject) => {
     Mockgen().requests({
       path: '/health',
@@ -35,10 +32,8 @@ Test('test Health get operation', async function (t) {
       return error ? reject(error) : resolve(mock)
     })
   })
-
   server.register([Routes])
   const mock = await requests
-
   t.pass(mock)
   t.pass(mock.request)
   //Get the resolved path from mock request
@@ -60,7 +55,6 @@ Test('test Health get operation', async function (t) {
   if (mock.request.headers && mock.request.headers.length > 0) {
     options.headers = mock.request.headers
   }
-
   const response = await server.inject(options)
   await server.stop()
   t.is(response.statusCode, 200, 'Ok response status')

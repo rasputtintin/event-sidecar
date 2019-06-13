@@ -45,11 +45,11 @@ const logEvent = async (message) => {
  *
  * @description A temporary endpoint to cater for testing purposes for CEP-Tracing API
  *
- * @returns {Promise<true>} Returns if the logging of the event is successful or not
+ * @returns {boolean} Returns if the logging of the event is successful or not
  */
-const handleRestRequest = async (request, h) => {
+const handleRestRequest = async (request) => {
   await logEvent(request.payload)
-  return h.response()
+  return true
 }
 
 module.exports = {

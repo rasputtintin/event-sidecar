@@ -80,23 +80,23 @@ const getHealth = async function (request, h) {
   const startTime = startTimeDate.toISOString()
   const versionNumber = packageJson.version
 
-  try {
-    // services = [
-    //   await getSubServiceHealth(serviceName.datastore),
-    //   await getSubServiceHealth(serviceName.broker)
-    // ]
-    // isHealthy = evaluateServiceHealth(services)
-    // subServices = {
-    //   services
-    // }
-  } catch (err) {
-    isHealthy = false
-  }
-
-  if (!isHealthy) {
-    statusCode = 502
-    status = statusEnum.DOWN
-  }
+  // try {
+  //   // services = [
+  //   //   await getSubServiceHealth(serviceName.datastore),
+  //   //   await getSubServiceHealth(serviceName.broker)
+  //   // ]
+  //   // isHealthy = evaluateServiceHealth(services)
+  //   // subServices = {
+  //   //   services
+  //   // }
+  // } catch (err) {
+  //   isHealthy = false
+  // }
+  //
+  // if (!isHealthy) {
+  //   statusCode = 502
+  //   status = statusEnum.DOWN
+  // }
 
   const response = {
     status,
