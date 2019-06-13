@@ -24,7 +24,7 @@
 'use strict'
 
 const handler = require('../domain/metadata/health')
-
+const Boom = require('@hapi/boom')
 /**
  * Operations on /health
  */
@@ -37,7 +37,11 @@ module.exports = {
    * responses: 200, 400, 401, 403, 404, 405, 406, 501, 503
    */
   get: async (request, h) => {
-    let {response, statusCode} = await handler.getHealth()
-    return h.response(response).code(statusCode)
+    try {
+      let {response, statusCode} = await handler.getHealth()
+      return h.response(response).code(statusCode)
+    } catch (e) {
+      return Boom.badRequest(e.message)
+    }
   }
 }
