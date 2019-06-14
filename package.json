@@ -1,0 +1,82 @@
+{
+    "name": "event-sidecar",
+    "description": "Event Sidecar is used to route and events to Kafka",
+    "version": "1.0.0",
+    "author": "Rajiv Mothilal <rajiv.mothilal@modusbox.com>",
+    "contributors": [
+        "Rajiv Mothilal <rajiv.mothilal@modusbox.com>"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/mojaloop/event-sidecar.git"
+    },
+    "bugs": "http://github.com/mojaloop/event-sidecar/issues",
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org"
+    },
+    "ava": {
+        "files": [
+            "test/unit/**/**.test.js"
+        ],
+        "sources": [
+            "src/**/*.js"
+        ]
+    },
+    "nyc": {
+        "temp-directory": "./.nyc_output",
+        "check-coverage": true,
+        "per-file": true,
+        "lines": 90,
+        "statements": 90,
+        "functions": 90,
+        "branches": 90,
+        "all": true,
+        "include": [
+            "src/**/*.js"
+        ],
+        "reporter": [
+            "lcov",
+            "text-summary"
+        ],
+        "exclude": [
+            "**/node_modules/**"
+        ]
+    },
+    "dependencies": {
+        "@hapi/boom": "7.4.2",
+        "@hapi/good": "8.2.0",
+        "@hapi/hapi": "18.3.1",
+        "@hapi/inert": "5.2.0",
+        "@hapi/vision": "5.5.2",
+        "@mojaloop/central-services-metrics": "5.2.0",
+        "@mojaloop/central-services-shared": "5.2.0",
+        "@mojaloop/central-services-stream": "6.2.2",
+        "blipp": "4.0.0",
+        "glob": "7.1.4",
+        "hapi-openapi": "1.2.2",
+        "hapi-swagger": "10.0.2",
+        "mustache": "3.0.1",
+        "uuid4": "1.1.4"
+    },
+    "devDependencies": {
+        "ava": "2.1.0",
+        "eslint": "5.16.0",
+        "get-port": "5.0.0",
+        "nyc": "14.1.1",
+        "proxyquire": "2.1.0",
+        "rewire": "4.0.1",
+        "sinon": "7.3.2",
+        "swagmock": "1.0.0"
+    },
+    "scripts": {
+        "start": "node src/index.js api",
+        "test": "npx ava test/unit/ match=.test.js",
+        "cover": "npx nyc --all report --reporter=lcov npm run test",
+        "lint": "eslint .",
+        "regenerate": "yo swaggerize:test --framework hapi --apiPath './src/interface/swagger.json'"
+    },
+    "generator-swaggerize": {
+        "version": "4.1.0"
+    },
+    "main": "./server"
+}
