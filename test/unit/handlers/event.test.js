@@ -9,6 +9,8 @@ const KafkaUtil = require('../../../src/lib/kafka/util')
 const eventHandler = require('../../../src/domain/event/handler')
 const Sinon = require('sinon')
 const Logger = require('@mojaloop/central-services-shared').Logger
+const Initialise = require('../../../src/server').initialize
+const getPort = require('get-port')
 
 let payload = {
   'from': 'noresponsepayeefsp',
@@ -27,8 +29,8 @@ let payload = {
   'metadata': {
     'event': {
       'id': '3920382d-f78c-4023-adf9-0d7a4a2a3a2f',
-      'type': 'position',
-      'action': 'commit',
+      'type': 'trace',
+      'action': 'start',
       'createdAt': '2019-05-29T23:18:32.935Z',
       'state': {
         'status': 'success',
@@ -38,9 +40,11 @@ let payload = {
       'responseTo': '1a396c07-47ab-4d68-a7a0-7a1ea36f0012'
     },
     'trace': {
+      'service': 'central-ledger-prepare-handler',
       'traceId': 'bbd7b2c7-3978-408e-ae2e-a13012c47739',
-      'parentId': '4e3ce424-d611-417b-a7b3-44ba9bbc5840',
+      'parentSpanId': '4e3ce424-d611-417b-a7b3-44ba9bbc5840',
       'spanId': 'efeb5c22-689b-4d04-ac5a-2aa9cd0a7e87',
+      'timestamp': '2015-08-29T11:22:09.815479Z'
     }
   }
 }
@@ -151,6 +155,92 @@ Test.serial('test Event processes correctly', async function (t) {
   const options = {
     method: 'post',
     url: mock.request.path
+  }
+  if (mock.request.body) {
+    //Send the request body
+    options.payload = mock.request.body
+  } else if (mock.request.formData) {
+    //Send the request form data
+    options.payload = mock.request.formData
+    //Set the Content-Type as application/x-www-form-urlencoded
+    options.headers = options.headers || {}
+  }
+  // If headers are present, set the headers.
+  if (mock.request.headers && mock.request.headers.length > 0) {
+    options.headers = mock.request.headers
+  }
+  sandbox.stub(KafkaUtil, 'produceGeneralMessage').returns(Promise.resolve(true))
+  const response = await server.inject(options)
+  await server.stop()
+  t.is(response.statusCode, 201, 'Success')
+  sandbox.restore()
+})
+
+Test.serial('test Event throws error and is handled correctly', async function (t) {
+  let sandbox = Sinon.createSandbox()
+  const server = await Initialise(await getPort())
+  const requests = new Promise((resolve, reject) => {
+    Mockgen().requests({
+      path: '/event',
+      operation: 'post'
+    }, function (error, mock) {
+      return error ? reject(error) : resolve(mock)
+    })
+  })
+  const mock = await requests
+  t.pass(mock)
+  t.pass(mock.request)
+  //Get the resolved path from mock request
+  //Mock request Path templates({}) are resolved using path parameters
+  const options = {
+    method: 'post',
+    url: '/event'
+  }
+  mock.request = {
+    body: payload
+  }
+  if (mock.request.body) {
+    //Send the request body
+    options.payload = mock.request.body
+  } else if (mock.request.formData) {
+    //Send the request form data
+    options.payload = mock.request.formData
+    //Set the Content-Type as application/x-www-form-urlencoded
+    options.headers = options.headers || {}
+  }
+  // If headers are present, set the headers.
+  if (mock.request.headers && mock.request.headers.length > 0) {
+    options.headers = mock.request.headers
+  }
+  sandbox.stub(KafkaUtil, 'produceGeneralMessage').throwsException('Error')
+  const response = await server.inject(options)
+  await server.stop()
+  t.is(response.statusCode, 400, 'Error thrown')
+  sandbox.restore()
+})
+
+Test.serial('test Event processes and response is logged correctly', async function (t) {
+  let sandbox = Sinon.createSandbox()
+  const server = await Initialise(await getPort())
+  const requests = new Promise((resolve, reject) => {
+    Mockgen().requests({
+      path: '/event',
+      operation: 'post'
+    }, function (error, mock) {
+      return error ? reject(error) : resolve(mock)
+    })
+  })
+  const mock = await requests
+  t.pass(mock)
+  t.pass(mock.request)
+  //Get the resolved path from mock request
+  //Mock request Path templates({}) are resolved using path parameters
+  const options = {
+    method: 'post',
+    url: '/event'
+  }
+  mock.request = {
+    body: payload
   }
   if (mock.request.body) {
     //Send the request body
