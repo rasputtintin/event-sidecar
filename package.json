@@ -1,7 +1,7 @@
 {
     "name": "event-sidecar",
     "description": "Event Sidecar is used to route and events to Kafka",
-    "version": "1.0.0",
+    "version": "6.4.0",
     "author": "Rajiv Mothilal <rajiv.mothilal@modusbox.com>",
     "contributors": [
         "Rajiv Mothilal <rajiv.mothilal@modusbox.com>"
@@ -51,6 +51,7 @@
         "@mojaloop/central-services-metrics": "5.2.0",
         "@mojaloop/central-services-shared": "5.2.0",
         "@mojaloop/central-services-stream": "6.2.2",
+        "@mojaloop/event-sdk": "6.4.3-snapshot",
         "blipp": "4.0.0",
         "glob": "7.1.4",
         "hapi-openapi": "1.2.2",

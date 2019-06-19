@@ -31,7 +31,8 @@ const Config = require('./lib/config.js')
 const Logger = require('@mojaloop/central-services-shared').Logger
 const Plugins = require('./plugins')
 const RequestLogger = require('./lib/requestLogger')
-const Routes = require('./routes')
+const eventSDK = require('@mojaloop/event-sdk')
+const eventHandler = require('./domain/event/handler')
 
 const openAPIOptions = {
   api: Path.resolve(__dirname, './interface/swagger.json'),
@@ -57,7 +58,6 @@ const createServer = async (port) => {
       options: openAPIOptions
     }
   ])
-  server.register([Routes])
   await server.ext([
     {
       type: 'onPreHandler',
@@ -77,7 +77,7 @@ const createServer = async (port) => {
             errorInformation: {
               errorCode: error.statusCode,
               errorDescription: error.message,
-              extensionList:[{
+              extensionList: [{
                 key: '',
                 value: ''
               }]
@@ -98,17 +98,20 @@ const createServer = async (port) => {
  *
  * @description Create gRPC Server
  *
- * @param {string} serviceName - the name of the gRPC service for the corresponding API
- *
  * @returns {Promise<Server>} Returns the Server object
  */
-const createRPCServer = async (serviceName) => {
-  // code to create gRPC server here
+const createRPCServer = async () => {
+  const grpcServer = new eventSDK.EventLoggingServiceServer(Config.EVENT_LOGGER_GRPC_HOST, Config.EVENT_LOGGER_GRPC_PORT)
+  grpcServer.on(eventSDK.EVENT_RECEIVED, async (eventMessage) => {
+    Logger.info('Received eventMessage:', JSON.stringify(eventMessage, null, 2))
+    await eventHandler.logEvent(eventMessage)
+  })
+  grpcServer.start()
   return null
 }
 
-const initialize = async (port = Config.PORT, serviceName) => {
-  await createRPCServer(serviceName)
+const initialize = async (port = Config.PORT) => {
+  await createRPCServer()
   const server = await createServer(port)
   server.plugins.openapi.setHost(server.info.host + ':' + server.info.port)
   Logger.info(`Server running on ${server.info.host}:${server.info.port}`)

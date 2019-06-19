@@ -48,10 +48,9 @@ const logEvent = async (message) => {
  *
  * @returns {boolean} Returns if the logging of the event is successful or not
  */
-const handleRestRequest = async (request, h) => {
+const handleRestRequest = async (payload) => {
   try {
-    await logEvent(request.payload)
-    return h.response().code(200)
+    return await logEvent(payload)
   } catch (e) {
     throw Boom.badRequest(e.message)
   }
