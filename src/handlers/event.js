@@ -18,7 +18,7 @@ module.exports = {
       await handler.handleRestRequest(request.payload)
       return h.response().code(201)
     } catch (e) {
-      throw Boom.badRequest(e.message)
+      return Boom.badRequest(e.message)
     }
   }
 }

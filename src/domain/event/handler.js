@@ -26,7 +26,6 @@
 
 const kafkaUtil = require('../../lib/kafka/util')
 const Enums = require('../../lib/enum')
-const Boom = require('@hapi/boom')
 
 /**
  * @function logEvent
@@ -52,7 +51,7 @@ const handleRestRequest = async (payload) => {
   try {
     return await logEvent(payload)
   } catch (e) {
-    throw Boom.badRequest(e.message)
+    throw e
   }
 }
 

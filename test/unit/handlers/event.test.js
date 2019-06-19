@@ -1,11 +1,14 @@
 'use strict'
 
 const Test = require('ava')
+const Hapi = require('@hapi/hapi')
+const Path = require('path')
+const HapiOpenAPI = require('hapi-openapi')
 const Mockgen = require('../../util/mockgen.js')
 const KafkaUtil = require('../../../src/lib/kafka/util')
+const eventHandler = require('../../../src/domain/event/handler')
 const Sinon = require('sinon')
-const Initialise = require('../../../src/server').initialize
-const getPort = require('get-port')
+const Logger = require('@mojaloop/central-services-shared').Logger
 
 let payload = {
   'from': 'noresponsepayeefsp',
@@ -51,7 +54,39 @@ let payload = {
  */
 Test.serial('test Event throws and error', async function (t) {
   let sandbox = Sinon.createSandbox()
-  const server = await Initialise(await getPort())
+  const server = new Hapi.Server()
+  await server.register({
+    plugin: HapiOpenAPI,
+    options: {
+      api: Path.resolve(__dirname, '../../../src/interface/swagger.json'),
+      handlers: Path.join(__dirname, '../../../src/handlers'),
+      outputvalidation: false
+    }
+  })
+  await server.ext([
+    {
+      type: 'onPreResponse',
+      method: (request, h) => {
+        if (!request.response.isBoom) {
+          Logger.info(request.response)
+        } else {
+          const error = request.response
+          error.message = {
+            errorInformation: {
+              errorCode: error.statusCode,
+              errorDescription: error.message,
+              extensionList: [{
+                key: '',
+                value: ''
+              }]
+            }
+          }
+          error.reformat()
+        }
+        return h.continue
+      }
+    }
+  ])
   const requests = new Promise((resolve, reject) => {
     Mockgen().requests({
       path: '/event',
@@ -67,10 +102,7 @@ Test.serial('test Event throws and error', async function (t) {
   //Mock request Path templates({}) are resolved using path parameters
   const options = {
     method: 'post',
-    url: '/event'
-  }
-  mock.request = {
-    body: payload
+    url: mock.request.path
   }
   if (mock.request.body) {
     //Send the request body
@@ -85,7 +117,7 @@ Test.serial('test Event throws and error', async function (t) {
   if (mock.request.headers && mock.request.headers.length > 0) {
     options.headers = mock.request.headers
   }
-  sandbox.stub(KafkaUtil, 'produceGeneralMessage').throws(new Error('Error'))
+  sandbox.stub(eventHandler, 'handleRestRequest').throws(new Error('Error'))
   const response = await server.inject(options)
   await server.stop()
   t.is(response.statusCode, 400, 'Bad request error thrown')
@@ -94,7 +126,15 @@ Test.serial('test Event throws and error', async function (t) {
 
 Test.serial('test Event processes correctly', async function (t) {
   let sandbox = Sinon.createSandbox()
-  const server = await Initialise(await getPort())
+  const server = new Hapi.Server()
+  await server.register({
+    plugin: HapiOpenAPI,
+    options: {
+      api: Path.resolve(__dirname, '../../../src/interface/swagger.json'),
+      handlers: Path.join(__dirname, '../../../src/handlers'),
+      outputvalidation: true
+    }
+  })
   const requests = new Promise((resolve, reject) => {
     Mockgen().requests({
       path: '/event',
@@ -110,10 +150,7 @@ Test.serial('test Event processes correctly', async function (t) {
   //Mock request Path templates({}) are resolved using path parameters
   const options = {
     method: 'post',
-    url: '/event'
-  }
-  mock.request = {
-    body: payload
+    url: mock.request.path
   }
   if (mock.request.body) {
     //Send the request body
@@ -131,6 +168,6 @@ Test.serial('test Event processes correctly', async function (t) {
   sandbox.stub(KafkaUtil, 'produceGeneralMessage').returns(Promise.resolve(true))
   const response = await server.inject(options)
   await server.stop()
-  t.is(response.statusCode, 200, 'Success')
+  t.is(response.statusCode, 201, 'Success')
   sandbox.restore()
 })
