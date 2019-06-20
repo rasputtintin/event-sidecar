@@ -633,12 +633,6 @@
             "type": "string",
             "required": true,
             "description": "The Date header field indicates the date when the request was sent."
-        },
-        "ID": {
-            "name": "ID",
-            "in": "path",
-            "required": true,
-            "type": "string"
         }
     }
 }

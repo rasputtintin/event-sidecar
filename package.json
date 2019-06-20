@@ -26,10 +26,10 @@
         "temp-directory": "./.nyc_output",
         "check-coverage": true,
         "per-file": true,
-        "lines": 90,
-        "statements": 90,
-        "functions": 90,
-        "branches": 90,
+        "lines": 80,
+        "statements": 80,
+        "functions": 80,
+        "branches": 80,
         "all": true,
         "include": [
             "src/**/*.js"
@@ -73,6 +73,7 @@
         "start": "node src/index.js api",
         "test": "npx ava test/unit/ match=.test.js",
         "cover": "npx nyc --all report --reporter=lcov npm run test",
+        "test:coverage": "nyc ava",
         "lint": "eslint .",
         "regenerate": "yo swaggerize:test --framework hapi --apiPath './src/interface/swagger.json'"
     },
