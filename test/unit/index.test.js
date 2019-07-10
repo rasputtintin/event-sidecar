@@ -22,11 +22,29 @@ Test.afterEach(() => {
   Proxyquire.preserveCache()
 })
 
-Test('Commander should start all Handlers up via all switches', async test => {
+Test('Commander should start api Handler via api options', async test => {
   process.argv = [
     'node',
     'index.js',
-    'api'
+    'server',
+    '--api'
+  ]
+  const Index = Proxyquire('../../src/index', {
+    './server': SetupStub
+  })
+  const initOptions = {
+    port: Config.PORT,
+    serviceName: 'ml-api'
+  }
+  test.pass(await Index)
+  test.pass(SetupStub.initialize.calledWith(initOptions))
+})
+
+Test('Commander should start default Handler via default', async test => {
+  process.argv = [
+    'node',
+    'index.js',
+    'server'
   ]
   const Index = Proxyquire('../../src/index', {
     './server': SetupStub

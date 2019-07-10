@@ -22,36 +22,16 @@
             "src/**/*.js"
         ]
     },
-    "nyc": {
-        "temp-directory": "./.nyc_output",
-        "check-coverage": true,
-        "per-file": true,
-        "lines": 80,
-        "statements": 80,
-        "functions": 80,
-        "branches": 80,
-        "all": true,
-        "include": [
-            "src/**/*.js"
-        ],
-        "reporter": [
-            "lcov",
-            "text-summary"
-        ],
-        "exclude": [
-            "**/node_modules/**"
-        ]
-    },
     "dependencies": {
         "@hapi/boom": "7.4.2",
         "@hapi/good": "8.2.0",
         "@hapi/hapi": "18.3.1",
-        "@hapi/inert": "5.2.0",
+        "@hapi/inert": "5.2.1",
         "@hapi/vision": "5.5.2",
         "@mojaloop/central-services-metrics": "5.2.0",
-        "@mojaloop/central-services-shared": "5.2.0",
+        "@mojaloop/central-services-shared": "6.4.1",
         "@mojaloop/central-services-stream": "6.2.2",
-        "@mojaloop/event-sdk": "6.4.3-snapshot",
+        "@mojaloop/event-sdk": "6.4.8-snapshot",
         "blipp": "4.0.0",
         "glob": "7.1.4",
         "hapi-openapi": "1.2.2",
@@ -60,8 +40,8 @@
         "uuid4": "1.1.4"
     },
     "devDependencies": {
-        "ava": "2.1.0",
-        "eslint": "5.16.0",
+        "ava": "2.2.0",
+        "eslint": "6.0.1",
         "get-port": "5.0.0",
         "nyc": "14.1.1",
         "proxyquire": "2.1.0",
@@ -70,7 +50,7 @@
         "swagmock": "1.0.0"
     },
     "scripts": {
-        "start": "node src/index.js api",
+        "start": "node src/index.js server --api",
         "test": "npx ava test/unit/ match=.test.js",
         "cover": "npx nyc --all report --reporter=lcov npm run test",
         "test:coverage": "nyc ava",

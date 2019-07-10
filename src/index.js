@@ -35,16 +35,19 @@ Program
   .version(PJson.version)
   .description('CLI to manage Servers')
 
-Program.command('api')
+Program.command('server')
   .alias('a')
   .description('Start the Event Sidecar. Use options to specify server type of none to run both') // command description
-
+  .option('--api', 'Start API server')
   // function to execute when command is used
-  .action(async () => {
-    let options = {
-      port: Config.PORT
+  .action(async (args) => {
+    let options = {}
+    if (args.api) {
+      options = {
+        port: Config.PORT
+      }
     }
-    module.exports = Server.initialize(options.port)
+    module.exports = Server.initialize(options.port || 4002)
   })
 
 if (Array.isArray(process.argv) && process.argv.length > 1) {

@@ -41,7 +41,7 @@ module.exports = {
       let {response, statusCode} = await handler.getHealth()
       return h.response(response).code(statusCode)
     } catch (e) {
-      throw Boom.badRequest(e.message)
+      return Boom.badRequest(e.message)
     }
   }
 }
