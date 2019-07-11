@@ -44,7 +44,7 @@ const apiServices = {
 }
 
 const topicMap = {
-  'event': {
+  event: {
     functionality: eventType.EVENT
   }
 }

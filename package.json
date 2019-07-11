@@ -47,11 +47,12 @@
         "proxyquire": "2.1.0",
         "rewire": "4.0.1",
         "sinon": "7.3.2",
+        "standard": "13.0.0",
         "swagmock": "1.0.0"
     },
     "scripts": {
         "start": "node src/index.js server --api",
-        "test": "npx ava test/unit/ match=.test.js",
+        "test": "npx ava test/unit/**/*.test.js",
         "cover": "npx nyc --all report --reporter=lcov npm run test",
         "test:coverage": "nyc ava",
         "lint": "eslint .",

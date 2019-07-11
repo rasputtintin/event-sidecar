@@ -26,7 +26,7 @@
 
 const Server = require('./server')
 const PJson = require('../package.json')
-const {Command} = require('commander')
+const { Command } = require('commander')
 const Config = require('./lib/config')
 
 const Program = new Command()

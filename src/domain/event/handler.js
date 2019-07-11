@@ -26,6 +26,7 @@
 
 const kafkaUtil = require('../../lib/kafka/util')
 const Enums = require('../../lib/enum')
+const Logger = require('@mojaloop/central-services-shared').Logger
 
 /**
  * @function logEvent
@@ -37,7 +38,7 @@ const Enums = require('../../lib/enum')
  * @returns {Promise<true>} Returns if the logging of the event is successful or not
  */
 const logEvent = async (message) => {
-  return await kafkaUtil.produceGeneralMessage(Enums.eventType.EVENT, message, message.metadata.trace.traceId)
+  return kafkaUtil.produceGeneralMessage(Enums.eventType.EVENT, message, message.metadata.trace.traceId)
 }
 
 /**
@@ -49,8 +50,9 @@ const logEvent = async (message) => {
  */
 const handleRestRequest = async (payload) => {
   try {
-    return await logEvent(payload)
+    return logEvent(payload)
   } catch (e) {
+    Logger.error(e)
     throw e
   }
 }
