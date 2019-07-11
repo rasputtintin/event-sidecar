@@ -93,6 +93,7 @@ const transformGeneralTopicName = (functionality) => {
     }
     return generalTopicTemplate(functionality)
   } catch (e) {
+    Logger.error(e)
     throw e
   }
 }
@@ -159,7 +160,7 @@ const produceGeneralMessage = async (functionality, message, key) => {
   if (Enum.topicMap[functionality] && Enum.topicMap[functionality]) {
     functionalityMapped = Enum.topicMap[functionality].functionality
   }
-  let result = await Kafka.Producer.produceMessage(message,
+  const result = await Kafka.Producer.produceMessage(message,
     createGeneralTopicConf(functionalityMapped, key),
     getKafkaConfig(ENUMS.PRODUCER, functionalityMapped.toUpperCase()))
   return result

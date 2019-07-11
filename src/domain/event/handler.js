@@ -26,7 +26,7 @@
 
 const kafkaUtil = require('../../lib/kafka/util')
 const Enums = require('../../lib/enum')
-const Boom = require('@hapi/boom')
+const Logger = require('@mojaloop/central-services-shared').Logger
 
 /**
  * @function logEvent
@@ -38,7 +38,7 @@ const Boom = require('@hapi/boom')
  * @returns {Promise<true>} Returns if the logging of the event is successful or not
  */
 const logEvent = async (message) => {
-  return await kafkaUtil.produceGeneralMessage(Enums.eventType.EVENT, message, message.metadata.trace.traceId)
+  return kafkaUtil.produceGeneralMessage(Enums.eventType.EVENT, message, message.metadata.trace.traceId)
 }
 
 /**
@@ -48,12 +48,12 @@ const logEvent = async (message) => {
  *
  * @returns {boolean} Returns if the logging of the event is successful or not
  */
-const handleRestRequest = async (request, h) => {
+const handleRestRequest = async (payload) => {
   try {
-    await logEvent(request.payload)
-    return h.response().code(200)
+    return logEvent(payload)
   } catch (e) {
-    throw Boom.badRequest(e.message)
+    Logger.error(e)
+    throw e
   }
 }
 

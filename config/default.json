@@ -1,5 +1,7 @@
 {
   "PORT": 4001,
+  "EVENT_LOGGER_GRPC_HOST": "localhost",
+  "EVENT_LOGGER_GRPC_PORT": 50051,
   "INSTRUMENTATION": {
     "METRICS": {
       "DISABLED": false,

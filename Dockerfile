@@ -15,5 +15,5 @@ RUN apk del build-dependencies
 COPY config /opt/event-sidecar/config
 COPY src /opt/event-sidecar/src
 
-EXPOSE 4000
+EXPOSE 4001
 CMD ["npm", "run", "start"]

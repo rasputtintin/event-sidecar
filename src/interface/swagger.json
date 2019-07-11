@@ -57,6 +57,96 @@
                     }
                 }
             }
+        },
+        "/event": {
+            "post": {
+                "description": "The HTTP request POST /event is a REST endpoint to add an event to a Kafka Topic.",
+                "summary": "Post Event",
+                "tags": [
+                    "api"
+                ],
+                "operationId": "PostEvent",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/EventPayload"
+                        }
+                    }
+                ],
+                "x-examples": {
+                    "application/json": {
+                        "from": "noresponsepayeefsp",
+                        "to": "payerfsp",
+                        "id": "aa398930-f210-4dcd-8af0-7c769cea1660",
+                        "content": {
+                            "headers": {
+                                "content-type": "application/vnd.interoperability.transfers+json;version=1.0",
+                                "date": "'2019-05-28T16:34:41.000Z'",
+                                "fspiop-source": "noresponsepayeefsp",
+                                "fspiop-destination": "payerfsp"
+                            },
+                            "payload": "'data:application/vnd.interoperability.transfers+json;version=1.0;base64,ewogICJmdWxmaWxtZW50IjogIlVObEo5OGhaVFlfZHN3MGNBcXc0aV9VTjN2NHV0dDdDWkZCNHlmTGJWRkEiLAogICJjb21wbGV0ZWRUaW1lc3RhbXAiOiAiMjAxOS0wNS0yOVQyMzoxODozMi44NTZaIiwKICAidHJhbnNmZXJTdGF0ZSI6ICJDT01NSVRURUQiCn0'"
+                        },
+                        "type": "application/json",
+                        "metadata": {
+                            "event": {
+                                "id": "3920382d-f78c-4023-adf9-0d7a4a2a3a2f",
+                                "type": "trace",
+                                "action": "start",
+                                "createdAt": "'2019-05-29T23:18:32.935Z'",
+                                "state": {
+                                    "status": "success",
+                                    "code": 0,
+                                    "description": "action successful"
+                                },
+                                "responseTo": "1a396c07-47ab-4d68-a7a0-7a1ea36f0012"
+                            },
+                            "trace": {
+                                "service": "central-ledger-prepare-handler",
+                                "traceId": "bbd7b2c7-3978-408e-ae2e-a13012c47739",
+                                "parentSpanId": "4e3ce424-d611-417b-a7b3-44ba9bbc5840",
+                                "spanId": "efeb5c22-689b-4d04-ac5a-2aa9cd0a7e87",
+                                "timestamp": "'2015-08-29T11:22:09.815479Z'"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "$ref": "#/responses/Response201"
+                    },
+                    "400": {
+                        "$ref": "#/responses/ErrorResponse400"
+                    },
+                    "401": {
+                        "$ref": "#/responses/ErrorResponse401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/ErrorResponse403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/ErrorResponse404"
+                    },
+                    "405": {
+                        "$ref": "#/responses/ErrorResponse405"
+                    },
+                    "406": {
+                        "$ref": "#/responses/ErrorResponse406"
+                    },
+                    "501": {
+                        "$ref": "#/responses/ErrorResponse501"
+                    },
+                    "503": {
+                        "$ref": "#/responses/ErrorResponse503"
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -179,6 +269,191 @@
                     "description": "Current version of the API"
                 }
             }
+        },
+        "EventPayload": {
+            "title": "EventPayload",
+            "type": "object",
+            "description": "Data model for the complex type EventPayload.",
+            "properties": {
+                "from": {
+                    "type": "string",
+                    "description": "The initiator of the message"
+                },
+                "to": {
+                    "type": "string",
+                    "description": "The recipient of the message"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier for message"
+                },
+                "pp": {
+                    "type": "string",
+                    "description": "Unique identifier for message"
+                },
+                "content": {
+                    "$ref": "#/definitions/Content"
+                },
+                "type": {
+                    "type": "string",
+                    "description": "The type of the payload i.e. application/json"
+                },
+                "metadata": {
+                    "$ref": "#/definitions/Metadata"
+                }
+            },
+            "required": [
+                "from",
+                "to",
+                "id",
+                "type",
+                "content"
+            ]
+        },
+        "Content": {
+            "title": "Content",
+            "type": "object",
+            "description": "Content object in EventPayload",
+            "properties": {
+                "headers": {
+                    "$ref": "#/definitions/Headers"
+                },
+                "payload": {
+                    "type": "string",
+                    "description": "base 64 encrypted payload for processing"
+                }
+            }
+        },
+        "Headers": {
+            "title": "Headers",
+            "type": "object",
+            "description": "Headers passed in kafka message",
+            "properties": {
+                "content-type": {
+                    "type": "string",
+                    "description": "Content type for message"
+                },
+                "date": {
+                    "type": "string",
+                    "description": "A UTC format of the date"
+                },
+                "fspiop-source": {
+                    "type": "string",
+                    "description": "The FSP that the message originated from"
+                },
+                "fspiop-destination": {
+                    "type": "string",
+                    "description": "The FSP that the message is going to"
+                }
+            }
+        },
+        "Metadata": {
+            "title": "Metadata",
+            "type": "object",
+            "description": "The metadata of the Kafka message",
+            "properties": {
+                "event": {
+                    "$ref": "#/definitions/Event"
+                },
+                "trace": {
+                    "$ref": "#/definitions/Trace"
+                }
+            },
+            "required": [
+                "event",
+                "trace"
+            ]
+        },
+        "Event": {
+            "title": "Event",
+            "type": "object",
+            "description": "The event object of the metadata",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "The FSP that the message is going to"
+                },
+                "type": {
+                    "type": "string",
+                    "description": "The FSP that the message is going to"
+                },
+                "action": {
+                    "type": "string",
+                    "description": "The FSP that the message is going to"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "description": "The FSP that the message is going to"
+                },
+                "state": {
+                    "$ref": "#/definitions/State"
+                },
+                "responseTo": {
+                    "type": "string",
+                    "description": "Response UUID for previous message"
+                }
+            },
+            "required": [
+                "id",
+                "type",
+                "action",
+                "createdAt",
+                "state"
+            ]
+        },
+        "Trace": {
+            "title": "Trace",
+            "type": "object",
+            "description": "The trace object for auditing and logging",
+            "properties": {
+                "service": {
+                    "type": "string",
+                    "description": "The API the message is going through"
+                },
+                "traceId": {
+                    "type": "string",
+                    "description": "The traceId for the span of the message"
+                },
+                "parentSpanId": {
+                    "type": "string",
+                    "description": "The parentId of the span"
+                },
+                "spanId": {
+                    "type": "string",
+                    "description": "The Id for the span of the process"
+                },
+                "timestamp": {
+                    "type": "string",
+                    "description": "The current timestamp of the message"
+                }
+            },
+            "required": [
+                "service",
+                "traceId",
+                "spanId"
+            ]
+        },
+        "State": {
+            "title": "State",
+            "type": "object",
+            "description": "The current state of the message",
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "description": "The status of the message"
+                },
+                "code": {
+                    "type": "number",
+                    "description": "Error code"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "The description of the error code"
+                }
+            },
+            "required": [
+                "status"
+            ]
         }
     },
     "responses": {

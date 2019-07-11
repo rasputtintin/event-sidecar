@@ -26,9 +26,8 @@
 
 const Server = require('./server')
 const PJson = require('../package.json')
-const {Command} = require('commander')
+const { Command } = require('commander')
 const Config = require('./lib/config')
-const Logger = require('@mojaloop/central-services-shared').Logger
 
 const Program = new Command()
 
@@ -36,17 +35,19 @@ Program
   .version(PJson.version)
   .description('CLI to manage Servers')
 
-Program.command('api') // sub-command name, coffeeType = type, required
-  .alias('a') // alternative sub-command is `o`
+Program.command('server')
+  .alias('a')
   .description('Start the Event Sidecar. Use options to specify server type of none to run both') // command description
-
-  // function to execute when command is uses
+  .option('--api', 'Start API server')
+  // function to execute when command is used
   .action(async (args) => {
-    let options = {
-      port: Config.PORT,
-      serviceName: args
+    let options = {}
+    if (args.api) {
+      options = {
+        port: Config.PORT
+      }
     }
-    module.exports = Server.initialize(options.port, options.serviceName)
+    module.exports = Server.initialize(options.port || 4002)
   })
 
 if (Array.isArray(process.argv) && process.argv.length > 1) {

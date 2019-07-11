@@ -93,7 +93,7 @@ const topicConf = {
   opaqueKey: 0
 }
 let sandbox
-let config = {}
+const config = {}
 
 Test.serial.beforeEach(() => {
   sandbox = Sinon.createSandbox()
@@ -121,7 +121,6 @@ Test.serial('disconnect specific topic correctly', async test => {
     test.pass('Disconnect specific topic successfully')
   } catch (e) {
     test.fail('Error thrown')
-
   }
 })
 
@@ -135,15 +134,12 @@ Test.serial('disconnect all topics correctly', async test => {
     test.pass('Disconnected all topics successfully')
   } catch (e) {
     test.fail('Error thrown')
-
   }
 })
 
-
 Test.serial('fetch a specific Producers', async test => {
-  await Producer.produceMessage({}, {topicName: 'test'}, {})
+  await Producer.produceMessage({}, { topicName: 'test' }, {})
   test.pass(Producer.getProducer('test'))
-
 })
 
 Test.serial('throw an exception for a specific Producers not found', async test => {
@@ -153,13 +149,11 @@ Test.serial('throw an exception for a specific Producers not found', async test 
   } catch (e) {
     test.pass(e.toString() === 'Error: No producer found for topic undefined')
   }
-
 })
 
 Test.serial('disconnect from kafka', async test => {
-  await Producer.produceMessage({}, {topicName: 'test'}, {})
+  await Producer.produceMessage({}, { topicName: 'test' }, {})
   test.pass(Producer.disconnect('test'))
-
 })
 
 // Test.serial('disconnect specific topic correctly', async test => {
@@ -191,9 +185,8 @@ Test.serial('disconnect from kafka', async test => {
 // })
 
 Test.serial('throw error if failure to disconnect from kafka when disconnecting all Producers', async test => {
-  let getProducerStub
   let topicNameFailure
-  getProducerStub = sandbox.stub()
+  const getProducerStub = sandbox.stub()
   try {
     // setup stubs for getProducer method
     const topicNameSuccess = 'topic1'
@@ -204,25 +197,23 @@ Test.serial('throw error if failure to disconnect from kafka when disconnecting 
     const KafkaProducerProxy = rewire(`${src}/lib/kafka/producer`)
     // lets override the getProducer method within the import
     KafkaProducerProxy.__set__('getProducer', getProducerStub)
-    await KafkaProducerProxy.produceMessage({}, {topicName: topicNameSuccess}, {})
-    await KafkaProducerProxy.produceMessage({}, {topicName: topicNameFailure}, {})
+    await KafkaProducerProxy.produceMessage({}, { topicName: topicNameSuccess }, {})
+    await KafkaProducerProxy.produceMessage({}, { topicName: topicNameFailure }, {})
     await KafkaProducerProxy.disconnect()
     test.fail()
   } catch (e) {
     test.pass(e instanceof Error)
     test.pass(e.toString() === `Error: The following Producers could not be disconnected: [{"topic":"${topicNameFailure}","error":"No producer found for topic ${topicNameFailure}"}]`)
   }
-
 })
 
 Test.serial('throw error if failure to disconnect from kafka if topic does not exist', async test => {
   try {
     const topicName = 'someTopic'
-    await Producer.produceMessage({}, {topicName: topicName}, {})
+    await Producer.produceMessage({}, { topicName: topicName }, {})
     await Producer.disconnect('undefined')
   } catch (e) {
     test.pass(e instanceof Error)
-
   }
 })
 
@@ -231,10 +222,8 @@ Test.serial('throw error when a non-string value is passed into disconnect', asy
     const badTopicName = {}
     await Producer.disconnect(badTopicName)
     test.fail('Error not thrown')
-
   } catch (e) {
     test.pass('Error Thrown')
-
   }
 })
 
@@ -250,6 +239,5 @@ Test.serial('throw error when connect throws error', async test => {
     test.fail('Error not thrown')
   } catch (e) {
     test.pass('Error thrown')
-
   }
 })

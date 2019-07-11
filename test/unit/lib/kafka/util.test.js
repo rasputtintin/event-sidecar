@@ -43,7 +43,6 @@ const Utility = require('../../../../src/lib/kafka/util')
 const EVENT = 'event'
 const PRODUCER = 'PRODUCER'
 const KEY = 'key'
-const PARTITION = 0
 const generalTopic = 'topic-event'
 
 const transfer = {
@@ -109,7 +108,6 @@ Test.serial.beforeEach(() => {
 Test.serial.afterEach(() => {
   sandbox.restore()
 })
-
 
 Test.serial('createGeneralTopicConf should return a general topic conf object', test => {
   const response = Utility.createGeneralTopicConf(EVENT, 0)
