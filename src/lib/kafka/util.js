@@ -160,10 +160,9 @@ const produceGeneralMessage = async (functionality, message, key) => {
   if (Enum.topicMap[functionality] && Enum.topicMap[functionality]) {
     functionalityMapped = Enum.topicMap[functionality].functionality
   }
-  const result = await Kafka.Producer.produceMessage(message,
+  return Kafka.Producer.produceMessage(message,
     createGeneralTopicConf(functionalityMapped, key),
     getKafkaConfig(ENUMS.PRODUCER, functionalityMapped.toUpperCase()))
-  return result
 }
 
 module.exports = {

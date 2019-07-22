@@ -102,6 +102,7 @@ const createServer = async (port) => {
  */
 const createRPCServer = async () => {
   const grpcServer = new eventSDK.EventLoggingServiceServer(Config.EVENT_LOGGER_GRPC_HOST, Config.EVENT_LOGGER_GRPC_PORT)
+  Logger.info(`GRPC Server started at host: ${grpcServer.host}, port: ${grpcServer.port}`)
   grpcServer.on(eventSDK.EVENT_RECEIVED, async (eventMessage) => {
     Logger.info('Received eventMessage:', JSON.stringify(eventMessage, null, 2))
     await eventHandler.logEvent(eventMessage)
