@@ -1,8 +1,8 @@
 {
     "name": "event-sidecar",
     "description": "Event Sidecar is used to route and events to Kafka",
-    "version": "6.4.0",
-    "author": "Rajiv Mothilal <rajiv.mothilal@modusbox.com>",
+    "version": "7.1.0",
+    "author": "Modusbox",
     "contributors": [
         "Rajiv Mothilal <rajiv.mothilal@modusbox.com>"
     ],
