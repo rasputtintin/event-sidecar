@@ -49,12 +49,7 @@ const logEvent = async (message) => {
  * @returns {boolean} Returns if the logging of the event is successful or not
  */
 const handleRestRequest = async (payload) => {
-  try {
-    return logEvent(payload)
-  } catch (e) {
-    Logger.error(e)
-    throw e
-  }
+  return logEvent(payload)
 }
 
 module.exports = {
