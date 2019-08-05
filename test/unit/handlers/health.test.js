@@ -1,14 +1,56 @@
+/*****
+ License
+ --------------
+ Copyright © 2017 Bill & Melinda Gates Foundation
+ The Mojaloop files are made available by the Bill & Melinda Gates Foundation under the Apache License, Version 2.0 (the "License") and you may not use these files except in compliance with the License. You may obtain a copy of the License at
+ http://www.apache.org/licenses/LICENSE-2.0
+ Unless required by applicable law or agreed to in writing, the Mojaloop files are distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ Contributors
+ --------------
+ This is the official list of the Mojaloop project contributors for this file.
+ Names of the original copyright holders (individuals or organizations)
+ should be listed with a '*' in the first column. People who have
+ contributed from an organization can be listed under the organization
+ that actually holds the copyright for their contributions (see the
+ Gates Foundation organization for an example). Those individuals should have
+ their names indented and be marked with a '-'. Email address can be added
+ optionally within square brackets <email>.
+ * Gates Foundation
+ - Name Surname <name.surname@gatesfoundation.com>
+
+ * ModusBox
+ - Miguel de Barros <miguel.debarros@modusbox.com>
+ - Rajiv Mothilal <rajiv.mothilal@modusbox.com>
+ --------------
+ ******/
+
 'use strict'
 
 const Test = require('ava')
-const Hapi = require('@hapi/hapi')
-const HapiOpenAPI = require('hapi-openapi')
-const Path = require('path')
 const Mockgen = require('../../util/mockgen.js')
 const Handler = require('../../../src/domain/metadata/health')
 const Sinon = require('sinon')
-const Initialise = require('../../../src/server').initialize
-const getPort = require('get-port')
+const Logger = require('@mojaloop/central-services-shared').Logger
+const Server = require('../../../src/server')
+
+let sandbox
+let server
+
+Test.beforeEach(async () => {
+  try {
+    sandbox = Sinon.createSandbox()
+
+    const initResult = await Server.initialize()
+    server = initResult.server
+  } catch (err) {
+    Logger.error(`setupTest failed with error - ${err}`)
+  }
+})
+
+Test.afterEach(async () => {
+  sandbox.restore()
+  await server.stop()
+})
 
 /**
  * summary: Get Health
@@ -18,15 +60,7 @@ const getPort = require('get-port')
  * responses: 200, 400, 401, 403, 404, 405, 406, 501, 503
  */
 Test.serial('test Health get operation', async function (t) {
-  const server = new Hapi.Server()
-  await server.register({
-    plugin: HapiOpenAPI,
-    options: {
-      api: Path.resolve(__dirname, '../../../src/interface/swagger.json'),
-      handlers: Path.join(__dirname, '../../../src/handlers'),
-      outputvalidation: true
-    }
-  })
+  // const server = new Hapi.Server()
   const requests = new Promise((resolve, reject) => {
     Mockgen().requests({
       path: '/health',
@@ -35,6 +69,7 @@ Test.serial('test Health get operation', async function (t) {
       return error ? reject(error) : resolve(mock)
     })
   })
+
   const mock = await requests
   t.pass(mock)
   t.pass(mock.request)
@@ -58,13 +93,12 @@ Test.serial('test Health get operation', async function (t) {
     options.headers = mock.request.headers
   }
   const response = await server.inject(options)
-  await server.stop()
+
   t.is(response.statusCode, 200, 'Ok response status')
 })
 
 Test.serial('test Health throws and error', async function (t) {
-  const sandbox = Sinon.createSandbox()
-  const server = await Initialise(await getPort())
+  // const server = await Initialise(await getPort())
   const requests = new Promise((resolve, reject) => {
     Mockgen().requests({
       path: '/health',
@@ -97,7 +131,6 @@ Test.serial('test Health throws and error', async function (t) {
   }
   sandbox.stub(Handler, 'getHealth').throws(new Error('Error'))
   const response = await server.inject(options)
-  await server.stop()
+
   t.is(response.statusCode, 400, 'Bad request error thrown')
-  sandbox.restore()
 })
