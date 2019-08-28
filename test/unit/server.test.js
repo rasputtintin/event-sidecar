@@ -31,6 +31,8 @@ const Logger = require('@mojaloop/central-services-shared').Logger
 const Proxyquire = require('proxyquire')
 const Path = require('path')
 const Config = require('../../src/lib/config')
+const eventSDK = require('@mojaloop/event-sdk')
+const eventHandler = require('../../src/domain/event/handler')
 
 let sandbox
 let serverStub
@@ -39,8 +41,9 @@ let HapiOpenAPIStub
 let PathStub
 let ConfigStub
 let SetupProxy
+let eventSDKStub
 
-setupTest.beforeEach(() => {
+setupTest.serial.beforeEach(() => {
   try {
     sandbox = Sinon.createSandbox()
 
@@ -66,26 +69,32 @@ setupTest.beforeEach(() => {
     PathStub = Path
     ConfigStub = Config
 
+    eventSDKStub = {
+      EventLoggingServiceServer: sandbox.stub(eventSDK.EventLoggingServiceServer)
+    }
+
     SetupProxy = Proxyquire('../../src/server', {
       '@hapi/hapi': HapiStub,
       'hapi-openapi': HapiOpenAPIStub,
       path: PathStub,
-      './lib/config': ConfigStub
+      './lib/config': ConfigStub,
+      '@mojaloop/event-sdk': eventSDKStub
     })
   } catch (err) {
     Logger.error(`setupTest failed with error - ${err}`)
   }
 })
 
-setupTest.afterEach(() => {
+setupTest.serial.afterEach(() => {
   sandbox.restore()
 })
 
-setupTest('initialize ', async test => {
+setupTest.serial('initialize ', async test => {
   try {
-    const server = await SetupProxy.initialize()
+    const { server, grpcServer } = await SetupProxy.initialize()
     test.assert(server, 'return server object')
     test.assert(HapiStub.Server.called, 'Hapi.Server called once')
+    test.assert(grpcServer, 'return grpcServer')
     // test.assert(serverStub.start.calledOnce, 'server.start called once')
     // test.assert(serverStub.plugins.openapi.setHost.calledOnce, 'server.plugins.openapi.setHost called once')
   } catch (err) {
@@ -94,15 +103,19 @@ setupTest('initialize ', async test => {
   }
 })
 
-setupTest('initialize grpc server ', async test => {
+setupTest.serial('initialize grpc server ', async test => {
+  const eventHandlerStub = sandbox.stub(eventHandler, 'logEvent')
   try {
-    const server = await SetupProxy.initialize()
+    const { server, grpcServer } = await SetupProxy.initialize()
+    grpcServer.emit(eventSDK.EVENT_RECEIVED)
+    // test.assert(eventHandlerStub.calledOnce, 'return server object')
+    grpcServer.emit('error')
     test.assert(server, 'return server object')
-    test.assert(HapiStub.Server.called, 'Hapi.Server called once')
-    // test.assert(serverStub.start.calledOnce, 'server.start called once')
-    // test.assert(serverStub.plugins.openapi.setHost.calledOnce, 'server.plugins.openapi.setHost called once')
+    // test.assert(HapiStub.Server.called, 'Hapi.Server called once')
+    test.assert(grpcServer, 'return grpcServer')
   } catch (err) {
     Logger.error(`init failed with error - ${err}`)
     test.fail()
   }
+  eventHandlerStub.restore()
 })

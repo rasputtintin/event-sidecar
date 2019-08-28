@@ -17,8 +17,8 @@
  optionally within square brackets <email>.
  * Gates Foundation
 
+ * ModusBox
  - Rajiv Mothilal <rajiv.mothilal@modusbox.com>
-
  --------------
  ******/
 
@@ -111,15 +111,18 @@ const createRPCServer = async () => {
     Logger.error('Error', JSON.stringify(error, null, 2))
   })
   grpcServer.start()
-  return null
+  return grpcServer
 }
 
 const initialize = async (port = Config.PORT) => {
-  await createRPCServer()
+  const grpcServer = await createRPCServer()
   const server = await createServer(port)
   server.plugins.openapi.setHost(server.info.host + ':' + server.info.port)
   Logger.info(`Server running on ${server.info.host}:${server.info.port}`)
-  return server
+  return {
+    server,
+    grpcServer
+  }
 }
 
 module.exports = {

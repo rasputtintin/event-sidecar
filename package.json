@@ -4,7 +4,9 @@
     "version": "7.4.0",
     "author": "Modusbox",
     "contributors": [
-        "Rajiv Mothilal <rajiv.mothilal@modusbox.com>"
+        "Rajiv Mothilal <rajiv.mothilal@modusbox.com>",
+        "Valentin Genev <valentin.genev@modusbox.com>",
+        "Miguel de Barros <miguel.debarros@modusbox.com"
     ],
     "repository": {
         "type": "git",
@@ -29,7 +31,7 @@
         "@hapi/inert": "5.2.1",
         "@hapi/vision": "5.5.2",
         "@mojaloop/central-services-metrics": "5.2.0",
-        "@mojaloop/central-services-shared": "6.4.1",
+        "@mojaloop/central-services-shared": "7.2.0",
         "@mojaloop/central-services-stream": "6.2.2",
         "@mojaloop/event-sdk": "7.4.1",
         "blipp": "4.0.0",
