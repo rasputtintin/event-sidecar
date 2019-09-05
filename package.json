@@ -1,8 +1,8 @@
 {
     "name": "event-sidecar",
     "description": "Event Sidecar is used to route and events to Kafka",
-    "version": "7.4.0",
-    "author": "Modusbox",
+    "version": "7.4.1-snapshot",
+    "author": "ModusBox",
     "contributors": [
         "Rajiv Mothilal <rajiv.mothilal@modusbox.com>",
         "Valentin Genev <valentin.genev@modusbox.com>",
@@ -33,7 +33,7 @@
         "@mojaloop/central-services-metrics": "5.2.0",
         "@mojaloop/central-services-shared": "7.2.0",
         "@mojaloop/central-services-stream": "6.2.2",
-        "@mojaloop/event-sdk": "7.4.0",
+        "@mojaloop/event-sdk": "7.4.1-snapshot",
         "blipp": "4.0.0",
         "glob": "7.1.4",
         "hapi-openapi": "1.2.2",
@@ -45,6 +45,7 @@
         "ava": "2.2.0",
         "eslint": "6.1.0",
         "get-port": "5.0.0",
+        "npm-check-updates": "3.1.21",
         "nyc": "14.1.1",
         "proxyquire": "2.1.1",
         "rewire": "4.0.1",
@@ -52,13 +53,22 @@
         "standard": "13.1.0",
         "swagmock": "1.0.0"
     },
+    "pre-commit": [
+        "dep:check",
+        "build",
+        "lint",
+        "test"
+    ],
     "scripts": {
         "start": "node src/index.js server --api",
         "test": "npx ava test/unit/**/*.test.js",
         "cover": "npx nyc --all report --reporter=lcov npm run test",
         "test:coverage": "nyc ava",
         "lint": "eslint .",
-        "regenerate": "yo swaggerize:test --framework hapi --apiPath './src/interface/swagger.json'"
+        "pre-commit": "1.2.2",
+        "regenerate": "yo swaggerize:test --framework hapi --apiPath './src/interface/swagger.json'",
+        "dep:check": "npx ncu -e 2",
+        "dep:update": "npx ncu -u"
     },
     "generator-swaggerize": {
         "version": "4.1.0"
