@@ -33,7 +33,7 @@
         "@mojaloop/central-services-metrics": "5.2.0",
         "@mojaloop/central-services-shared": "7.4.8",
         "@mojaloop/central-services-stream": "7.4.0",
-        "@mojaloop/event-sdk": "7.4.1-snapshot",
+        "@mojaloop/event-sdk": "7.4.6-snapshot",
         "blipp": "4.0.0",
         "glob": "7.1.4",
         "hapi-openapi": "1.2.2",
