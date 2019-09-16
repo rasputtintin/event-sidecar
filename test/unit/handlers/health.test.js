@@ -30,7 +30,7 @@ const Test = require('ava')
 const Mockgen = require('../../util/mockgen.js')
 const Handler = require('../../../src/domain/metadata/health')
 const Sinon = require('sinon')
-const Logger = require('@mojaloop/central-services-shared').Logger
+const Logger = require('@mojaloop/central-services-logger')
 const Server = require('../../../src/server')
 
 let sandbox

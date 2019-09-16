@@ -1,5 +1,5 @@
 // const initJaegerTracer = require('jaeger-client').initTracer
-// const Logger = require('@mojaloop/central-services-shared').Logger
+// const Logger = require('@mojaloop/central-services-logger')
 
 // function initTracer(serviceName) {
 //   let config = {

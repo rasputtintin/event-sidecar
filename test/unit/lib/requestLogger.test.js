@@ -28,7 +28,7 @@
 
 const Test = require('ava')
 const Sinon = require('sinon')
-const Logger = require('@mojaloop/central-services-shared').Logger
+const Logger = require('@mojaloop/central-services-logger')
 const Util = require('util')
 const RequestLogger = require('../../../src/lib/requestLogger')
 

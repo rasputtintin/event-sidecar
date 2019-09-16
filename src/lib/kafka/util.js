@@ -32,7 +32,7 @@
 const Config = require('../../lib/config')
 const Mustache = require('mustache')
 const KafkaConfig = Config.KAFKA_CONFIG
-const Logger = require('@mojaloop/central-services-shared').Logger
+const Logger = require('@mojaloop/central-services-logger')
 const Kafka = require('./index')
 const Enum = require('../../lib/enum')
 
