@@ -26,7 +26,7 @@
 
 const kafkaUtil = require('../../lib/kafka/util')
 const Enums = require('../../lib/enum')
-const Logger = require('@mojaloop/central-services-shared').Logger
+const Logger = require('@mojaloop/central-services-logger')
 
 /**
  * @function logEvent

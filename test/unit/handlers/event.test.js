@@ -33,7 +33,7 @@ const Mockgen = require('../../util/mockgen.js')
 const KafkaUtil = require('../../../src/lib/kafka/util')
 const eventHandler = require('../../../src/domain/event/handler')
 const Sinon = require('sinon')
-const Logger = require('@mojaloop/central-services-shared').Logger
+const Logger = require('@mojaloop/central-services-logger')
 const Initialise = require('../../../src/server').initialize
 const getPort = require('get-port')
 
