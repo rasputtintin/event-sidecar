@@ -1,8 +1,26 @@
 {
-  "1164|hapi-swagger>handlebars": {
-    "fix": 1
+  "decisions": {
+    "1164|hapi-swagger>handlebars": {
+      "madeAt": 0,
+      "decision": "fix"
+    },
+    "1164|nyc>istanbul-reports>handlebars": {
+      "madeAt": 0,
+      "decision": "fix"
+    },
+    "1316|nyc>istanbul-reports>handlebars": {
+      "decision": "postpone",
+      "madeAt": 1575995818965
+    },
+    "1324|nyc>istanbul-reports>handlebars": {
+      "decision": "postpone",
+      "madeAt": 1575995818965
+    },
+    "1325|nyc>istanbul-reports>handlebars": {
+      "decision": "postpone",
+      "madeAt": 1575995818965
+    }
   },
-  "1164|nyc>istanbul-reports>handlebars": {
-    "fix": 1
-  }
+  "rules": {},
+  "version": 1
 }
