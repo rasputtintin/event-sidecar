@@ -9,16 +9,19 @@
       "decision": "fix"
     },
     "1316|nyc>istanbul-reports>handlebars": {
-      "decision": "postpone",
-      "madeAt": 1575995818965
+      "decision": "ignore",
+      "madeAt": 1576158894516,
+      "expiresAt": 1578750858010
     },
     "1324|nyc>istanbul-reports>handlebars": {
-      "decision": "postpone",
-      "madeAt": 1575995818965
+      "decision": "ignore",
+      "madeAt": 1576158894516,
+      "expiresAt": 1578750858010
     },
     "1325|nyc>istanbul-reports>handlebars": {
-      "decision": "postpone",
-      "madeAt": 1575995818965
+      "decision": "ignore",
+      "madeAt": 1576158894516,
+      "expiresAt": 1578750858010
     }
   },
   "rules": {},
