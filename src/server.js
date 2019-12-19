@@ -105,9 +105,7 @@ const createRPCServer = async () => {
   Logger.info(`GRPC Server started at host: ${grpcServer.host}, port: ${grpcServer.port}`)
   grpcServer.on(eventSDK.EVENT_RECEIVED, async (eventMessage) => {
     Logger.debug('Received eventMessage:', JSON.stringify(eventMessage, null, 2))
-    if (eventMessage && eventMessage.metadata) {
-      Logger.info(`Received Event :: type: ${eventMessage.metadata.trace.tags.transactionType} :: action: ${eventMessage.metadata.trace.tags.transactionAction} *** Span :: traceId: ${eventMessage.metadata.trace.traceId} :: spanId: ${eventMessage.metadata.trace.spanId} :: tracestate: ${eventMessage.metadata.trace.tags.tracestate}`)
-    }
+    Logger.info(`Received Event :: type: ${eventMessage.metadata.trace.tags.transactionType} :: action: ${eventMessage.metadata.trace.tags.transactionAction} *** Span :: traceId: ${eventMessage.metadata.trace.traceId} :: spanId: ${eventMessage.metadata.trace.spanId} :: tracestate: ${eventMessage.metadata.trace.tags.tracestate}`)
     await eventHandler.logEvent(eventMessage)
   })
   grpcServer.on('error', async (error) => {

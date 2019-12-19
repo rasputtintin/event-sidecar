@@ -107,7 +107,20 @@ setupTest.serial('initialize grpc server ', async test => {
   const eventHandlerStub = sandbox.stub(eventHandler, 'logEvent')
   try {
     const { server, grpcServer } = await SetupProxy.initialize()
-    grpcServer.emit(eventSDK.EVENT_RECEIVED)
+
+    grpcServer.emit(eventSDK.EVENT_RECEIVED, {
+      metadata: {
+        trace: {
+          spanId: 'test',
+          traceId: 'test',
+          tags: {
+            transactionAction: 'test',
+            transactionType: 'test',
+            tracestate: 'test'
+          }
+        }
+      }
+    })
     // test.assert(eventHandlerStub.calledOnce, 'return server object')
     grpcServer.emit('error')
     test.assert(server, 'return server object')
