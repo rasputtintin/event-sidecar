@@ -56,19 +56,19 @@ const produceMessage = async (messageProtocol, topicConf, config) => {
     if (listOfProducers[topicConf.topicName]) {
       producer = listOfProducers[topicConf.topicName]
     } else {
-      Logger.info('Producer::start::topic=' + topicConf.topicName)
+      Logger.debug('Producer::start::topic=' + topicConf.topicName)
       producer = new Producer(config)
       Logger.info('Producer::connect::start')
       await producer.connect()
       Logger.info('Producer::connect::end')
       listOfProducers[topicConf.topicName] = producer
     }
-    Logger.info(`Producer.sendMessage::messageProtocol:'${JSON.stringify(messageProtocol)}'`)
+    Logger.debug(`Producer.sendMessage::messageProtocol:'${JSON.stringify(messageProtocol)}'`)
     await producer.sendMessage(messageProtocol, topicConf)
-    Logger.info('Producer::end')
+    Logger.debug('Producer::end')
     return true
   } catch (e) {
-    Logger.error(e)
+    Logger.error(e.stack)
     Logger.info(`Producer error has occurred for ${topicConf.topicName}`)
     throw e
   }
