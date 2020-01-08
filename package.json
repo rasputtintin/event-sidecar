@@ -1,7 +1,7 @@
 {
     "name": "event-sidecar",
     "description": "Event Sidecar is used to route and events to Kafka",
-    "version": "8.8.0",
+    "version": "8.7.3",
     "author": "ModusBox",
     "contributors": [
         "Rajiv Mothilal <rajiv.mothilal@modusbox.com>",
@@ -26,21 +26,21 @@
         ]
     },
     "dependencies": {
-        "@hapi/address": "4.0.0",
-        "@hapi/boom": "9.0.0",
+        "@hapi/address": "3.2.2",
+        "@hapi/boom": "8.0.1",
         "@hapi/good": "8.2.4",
         "@hapi/hapi": "18.4.0",
-        "@hapi/inert": "6.0.0",
+        "@hapi/inert": "5.2.2",
         "@hapi/vision": "5.5.4",
         "@mojaloop/central-services-logger": "8.6.0",
         "@mojaloop/central-services-metrics": "8.3.0",
         "@mojaloop/central-services-stream": "8.7.2",
-        "@mojaloop/event-sdk": "8.7.0",
+        "@mojaloop/event-sdk": "8.6.2",
         "blipp": "4.0.1",
         "glob": "7.1.6",
         "hapi-openapi": "1.2.6",
         "hapi-swagger": "11.1.0",
-        "mustache": "3.2.1",
+        "mustache": "3.2.0",
         "uuid4": "1.1.4"
     },
     "devDependencies": {
@@ -48,10 +48,10 @@
         "get-port": "5.1.0",
         "npm-audit-resolver": "2.1.0",
         "npm-check-updates": "4.0.1",
-        "nyc": "15.0.0",
+        "nyc": "14.1.1",
         "proxyquire": "2.1.3",
         "rewire": "4.0.1",
-        "sinon": "8.0.4",
+        "sinon": "7.5.0",
         "standard": "14.3.1",
         "swagmock": "1.0.0"
     },
