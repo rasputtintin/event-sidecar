@@ -1,0 +1,22 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.14.1
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  SNYK-JS-LODASH-567746:
+    - '@mojaloop/event-sdk > lodash':
+        patched: '2020-04-30T23:19:21.624Z'
+    - '@mojaloop/central-services-stream > @mojaloop/central-services-error-handling > lodash':
+        patched: '2020-04-30T23:19:21.624Z'
+    - '@mojaloop/central-services-logger > winston > async > lodash':
+        patched: '2020-04-30T23:19:21.624Z'
+    - '@mojaloop/event-sdk > sinon > @sinonjs/samsam > lodash':
+        patched: '2020-04-30T23:19:21.624Z'
+    - '@mojaloop/event-sdk > @mojaloop/central-services-logger > winston > async > lodash':
+        patched: '2020-04-30T23:19:21.624Z'
+    - '@mojaloop/event-sdk > sinon > @sinonjs/formatio > @sinonjs/samsam > lodash':
+        patched: '2020-04-30T23:19:21.624Z'
+    - '@mojaloop/central-services-stream > @mojaloop/central-services-error-handling > @mojaloop/sdk-standard-components > request-promise-native > request-promise-core > lodash':
+        patched: '2020-04-30T23:19:21.624Z'
+    - '@mojaloop/event-sdk > sinon > nise > @sinonjs/formatio > @sinonjs/samsam > lodash':
+        patched: '2020-04-30T23:19:21.624Z'
