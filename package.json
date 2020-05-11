@@ -38,7 +38,7 @@
         "@mojaloop/event-sdk": "8.6.2",
         "blipp": "4.0.1",
         "glob": "7.1.6",
-        "hapi-openapi": "1.2.6",
+        "hapi-openapi": "2.0.2",
         "hapi-swagger": "11.1.0",
         "mustache": "3.2.0",
         "uuid4": "1.1.4"
